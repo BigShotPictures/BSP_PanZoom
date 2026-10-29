@@ -1,10 +1,10 @@
-// Copyright 2026 Loops Creative Studio. All Rights Reserved.
+// Copyright Big Shot Pictures. Based on Loops 2D Pan/Zoom, Copyright 2026 Loops Creative Studio (MIT, see LICENSE).
 
 using UnrealBuildTool;
 
-public class Loops2DPanZoom : ModuleRules
+public class BSP_PanZoom : ModuleRules
 {
-	public Loops2DPanZoom(ReadOnlyTargetRules Target) : base(Target)
+	public BSP_PanZoom(ReadOnlyTargetRules Target) : base(Target)
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 

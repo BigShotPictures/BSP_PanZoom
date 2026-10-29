@@ -1,13 +1,13 @@
-// Copyright 2026 Loops Creative Studio. All Rights Reserved.
+// Copyright Big Shot Pictures. Based on Loops 2D Pan/Zoom, Copyright 2026 Loops Creative Studio (MIT, see LICENSE).
 
-#include "Loops2DPanZoomStyle.h"
+#include "BSPPanZoomStyle.h"
 #include "Styling/SlateStyleRegistry.h"
 #include "Interfaces/IPluginManager.h"
 #include "Brushes/SlateImageBrush.h"
 
-TSharedPtr<FSlateStyleSet> FLoops2DPanZoomStyle::StyleInstance = nullptr;
+TSharedPtr<FSlateStyleSet> FBSPPanZoomStyle::StyleInstance = nullptr;
 
-void FLoops2DPanZoomStyle::Initialize()
+void FBSPPanZoomStyle::Initialize()
 {
 	if (!StyleInstance.IsValid())
 	{
@@ -16,7 +16,7 @@ void FLoops2DPanZoomStyle::Initialize()
 	}
 }
 
-void FLoops2DPanZoomStyle::Shutdown()
+void FBSPPanZoomStyle::Shutdown()
 {
 	if (StyleInstance.IsValid())
 	{
@@ -25,28 +25,28 @@ void FLoops2DPanZoomStyle::Shutdown()
 	}
 }
 
-FName FLoops2DPanZoomStyle::GetStyleSetName()
+FName FBSPPanZoomStyle::GetStyleSetName()
 {
-	static FName StyleSetName(TEXT("Loops2DPanZoomStyle"));
+	static FName StyleSetName(TEXT("BSPPanZoomStyle"));
 	return StyleSetName;
 }
 
-const ISlateStyle& FLoops2DPanZoomStyle::Get()
+const ISlateStyle& FBSPPanZoomStyle::Get()
 {
 	return *StyleInstance;
 }
 
-TSharedRef<FSlateStyleSet> FLoops2DPanZoomStyle::Create()
+TSharedRef<FSlateStyleSet> FBSPPanZoomStyle::Create()
 {
 	TSharedRef<FSlateStyleSet> Style = MakeShareable(new FSlateStyleSet(GetStyleSetName()));
 
-	if (const TSharedPtr<IPlugin> Plugin = IPluginManager::Get().FindPlugin(TEXT("Loops2DPanZoom")))
+	if (const TSharedPtr<IPlugin> Plugin = IPluginManager::Get().FindPlugin(TEXT("BSP_PanZoom")))
 	{
 		Style->SetContentRoot(Plugin->GetBaseDir() / TEXT("Resources"));
 	}
 
 	const FVector2D IconSize(40.0f, 40.0f);
-	Style->Set("Loops2DPanZoom.Icon", new FSlateImageBrush(Style->RootToContentDir(TEXT("Icons/Loops2DPanZoom"), TEXT(".png")), IconSize));
+	Style->Set("BSPPanZoom.Icon", new FSlateImageBrush(Style->RootToContentDir(TEXT("Icons/BSPPanZoom"), TEXT(".png")), IconSize));
 
 	return Style;
 }

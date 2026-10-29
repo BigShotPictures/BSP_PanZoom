@@ -1,17 +1,17 @@
-// Copyright 2026 Loops Creative Studio. All Rights Reserved.
+// Copyright Big Shot Pictures. Based on Loops 2D Pan/Zoom, Copyright 2026 Loops Creative Studio (MIT, see LICENSE).
 
-#include "Loops2DPanZoomInputProcessor.h"
-#include "Loops2DPanZoomSubsystem.h"
+#include "BSPPanZoomInputProcessor.h"
+#include "BSPPanZoomSubsystem.h"
 #include "EditorViewportClient.h"
 #include "Editor.h"
 #include "Framework/Application/SlateApplication.h"
 #include "SEditorViewport.h"
-#include "Loops2DPanZoomCommands.h"
-#include "Loops2DPanZoomSettings.h"
+#include "BSPPanZoomCommands.h"
+#include "BSPPanZoomSettings.h"
 #include "EditorModeManager.h"
 #include "EditMode/ControlRigEditMode.h"
 
-namespace Loops2DPanZoomInput
+namespace BSPPanZoomInput
 {
 	static FEditorViewportClient* GetActiveEditorViewportClient()
 	{
@@ -56,12 +56,12 @@ namespace Loops2DPanZoomInput
 	static bool CanUseModeShortcuts(FSlateApplication& SlateApp)
 	{
 		return CanUseShortcuts(SlateApp)
-			&& (!GetDefault<ULoops2DPanZoomSettings>()->bAnimationModeOnly
+			&& (!GetDefault<UBSPPanZoomSettings>()->bAnimationModeOnly
 				|| GLevelEditorModeTools().IsModeActive(FControlRigEditMode::ModeName));
 	}
 }
 
-void FLoops2DPanZoomInputProcessor::Tick(const float DeltaTime, FSlateApplication& SlateApp, TSharedRef<ICursor> Cursor)
+void FBSPPanZoomInputProcessor::Tick(const float DeltaTime, FSlateApplication& SlateApp, TSharedRef<ICursor> Cursor)
 {
 	// Key-up is lost on application switches; don't leave the modifier stuck.
 	if (!SlateApp.IsActive())
@@ -74,34 +74,34 @@ void FLoops2DPanZoomInputProcessor::Tick(const float DeltaTime, FSlateApplicatio
 		CapturedViewportClient = nullptr;
 	}
 	// Cancel the gesture across mode/focus changes, but consume its releases.
-	if (bPanZoomKeyDown && !Loops2DPanZoomInput::CanUseModeShortcuts(SlateApp))
+	if (bPanZoomKeyDown && !BSPPanZoomInput::CanUseModeShortcuts(SlateApp))
 	{
 		bPanZoomGestureCancelled = true;
 	}
 
 	if (GEditor)
 	{
-		if (ULoops2DPanZoomSubsystem* Subsystem = GEditor->GetEditorSubsystem<ULoops2DPanZoomSubsystem>())
+		if (UBSPPanZoomSubsystem* Subsystem = GEditor->GetEditorSubsystem<UBSPPanZoomSubsystem>())
 		{
 			Subsystem->TickAllAnimControlLocks();
 		}
 	}
 }
 
-bool FLoops2DPanZoomInputProcessor::HandleKeyDownEvent(FSlateApplication& SlateApp, const FKeyEvent& InKeyEvent)
+bool FBSPPanZoomInputProcessor::HandleKeyDownEvent(FSlateApplication& SlateApp, const FKeyEvent& InKeyEvent)
 {
 	const FKey Key = InKeyEvent.GetKey();
 
 	// Consume repeats only for a press we accepted; don't start mid-hold on a mode switch.
 	if (bPanZoomKeyDown && Key == PanZoomHeldKey) { return true; }
 	const FInputChord Chord(Key, InKeyEvent.IsShiftDown(), InKeyEvent.IsControlDown(), InKeyEvent.IsAltDown(), InKeyEvent.IsCommandDown());
-	const auto& Commands = FLoops2DPanZoomCommands::Get();
+	const auto& Commands = FBSPPanZoomCommands::Get();
 	const bool bReset = Commands.Reset->HasActiveChord(Chord);
 	if (bReset || Commands.ToggleAndDrag->HasActiveChord(Chord))
 	{
-		if (bPanZoomKeyDown || InKeyEvent.IsRepeat() || !Loops2DPanZoomInput::CanUseModeShortcuts(SlateApp)) { return false; }
-		ULoops2DPanZoomSubsystem* Subsystem = GEditor->GetEditorSubsystem<ULoops2DPanZoomSubsystem>();
-		FEditorViewportClient* Client = Loops2DPanZoomInput::GetActiveEditorViewportClient();
+		if (bPanZoomKeyDown || InKeyEvent.IsRepeat() || !BSPPanZoomInput::CanUseModeShortcuts(SlateApp)) { return false; }
+		UBSPPanZoomSubsystem* Subsystem = GEditor->GetEditorSubsystem<UBSPPanZoomSubsystem>();
+		FEditorViewportClient* Client = BSPPanZoomInput::GetActiveEditorViewportClient();
 		if (!Subsystem || !Client) { return false; }
 		bPanZoomKeyDown = true;
 		PanZoomHeldKey = Key;
@@ -116,13 +116,13 @@ bool FLoops2DPanZoomInputProcessor::HandleKeyDownEvent(FSlateApplication& SlateA
 	{
 		// The Control Rig lock is a Control Rig feature, so it keeps the full gate, Animation Mode
 		// included. Returning false leaves the key to Unreal instead of consuming it.
-		if (!Loops2DPanZoomInput::CanUseModeShortcuts(SlateApp))
+		if (!BSPPanZoomInput::CanUseModeShortcuts(SlateApp))
 		{
 			return false;
 		}
 
-		ULoops2DPanZoomSubsystem* Subsystem = GEditor ? GEditor->GetEditorSubsystem<ULoops2DPanZoomSubsystem>() : nullptr;
-		FEditorViewportClient* Client = Loops2DPanZoomInput::GetActiveEditorViewportClient();
+		UBSPPanZoomSubsystem* Subsystem = GEditor ? GEditor->GetEditorSubsystem<UBSPPanZoomSubsystem>() : nullptr;
+		FEditorViewportClient* Client = BSPPanZoomInput::GetActiveEditorViewportClient();
 		if (!Subsystem || !Client)
 		{
 			return false;
@@ -148,13 +148,13 @@ bool FLoops2DPanZoomInputProcessor::HandleKeyDownEvent(FSlateApplication& SlateA
 
 	// These stay available in every editor mode, as the Animation Mode Only preference promises, but
 	// they must still never be taken out of a text field.
-	if (!Loops2DPanZoomInput::CanUseShortcuts(SlateApp))
+	if (!BSPPanZoomInput::CanUseShortcuts(SlateApp))
 	{
 		return false;
 	}
 
-	ULoops2DPanZoomSubsystem* Subsystem = GEditor ? GEditor->GetEditorSubsystem<ULoops2DPanZoomSubsystem>() : nullptr;
-	FEditorViewportClient* Client = Loops2DPanZoomInput::GetActiveEditorViewportClient();
+	UBSPPanZoomSubsystem* Subsystem = GEditor ? GEditor->GetEditorSubsystem<UBSPPanZoomSubsystem>() : nullptr;
+	FEditorViewportClient* Client = BSPPanZoomInput::GetActiveEditorViewportClient();
 	if (!Subsystem || !Client || !Subsystem->IsEnabled(Client))
 	{
 		return false;
@@ -199,7 +199,7 @@ bool FLoops2DPanZoomInputProcessor::HandleKeyDownEvent(FSlateApplication& SlateA
 	return true;
 }
 
-bool FLoops2DPanZoomInputProcessor::HandleKeyUpEvent(FSlateApplication& SlateApp, const FKeyEvent& InKeyEvent)
+bool FBSPPanZoomInputProcessor::HandleKeyUpEvent(FSlateApplication& SlateApp, const FKeyEvent& InKeyEvent)
 {
 	if (InKeyEvent.GetKey() != PanZoomHeldKey || !bPanZoomKeyDown)
 	{
@@ -207,13 +207,13 @@ bool FLoops2DPanZoomInputProcessor::HandleKeyUpEvent(FSlateApplication& SlateApp
 	}
 
 	const bool bWasTap = !bPanZoomKeyUsedWithMouse && !bPanZoomGestureCancelled
-		&& Loops2DPanZoomInput::CanUseModeShortcuts(SlateApp);
+		&& BSPPanZoomInput::CanUseModeShortcuts(SlateApp);
 	bPanZoomKeyDown = false;
 	bPanZoomKeyUsedWithMouse = false;
 
 	// Toggle only if the original viewport is still the active target.
-	ULoops2DPanZoomSubsystem* Subsystem = GEditor ? GEditor->GetEditorSubsystem<ULoops2DPanZoomSubsystem>() : nullptr;
-	FEditorViewportClient* Client = Loops2DPanZoomInput::GetActiveEditorViewportClient();
+	UBSPPanZoomSubsystem* Subsystem = GEditor ? GEditor->GetEditorSubsystem<UBSPPanZoomSubsystem>() : nullptr;
+	FEditorViewportClient* Client = BSPPanZoomInput::GetActiveEditorViewportClient();
 	if (bWasTap && Subsystem && Client && Client == PanZoomKeyViewportClient)
 	{
 		Subsystem->ToggleEnabled(Client);
@@ -223,9 +223,9 @@ bool FLoops2DPanZoomInputProcessor::HandleKeyUpEvent(FSlateApplication& SlateApp
 	return true;
 }
 
-bool FLoops2DPanZoomInputProcessor::HandleMouseButtonDownEvent(FSlateApplication& SlateApp, const FPointerEvent& MouseEvent)
+bool FBSPPanZoomInputProcessor::HandleMouseButtonDownEvent(FSlateApplication& SlateApp, const FPointerEvent& MouseEvent)
 {
-	if (!bPanZoomKeyDown || bPanZoomGestureCancelled || !Loops2DPanZoomInput::CanUseModeShortcuts(SlateApp))
+	if (!bPanZoomKeyDown || bPanZoomGestureCancelled || !BSPPanZoomInput::CanUseModeShortcuts(SlateApp))
 	{
 		return false;
 	}
@@ -238,8 +238,8 @@ bool FLoops2DPanZoomInputProcessor::HandleMouseButtonDownEvent(FSlateApplication
 		return false;
 	}
 
-	ULoops2DPanZoomSubsystem* Subsystem = GEditor ? GEditor->GetEditorSubsystem<ULoops2DPanZoomSubsystem>() : nullptr;
-	FEditorViewportClient* Client = Loops2DPanZoomInput::GetActiveEditorViewportClient();
+	UBSPPanZoomSubsystem* Subsystem = GEditor ? GEditor->GetEditorSubsystem<UBSPPanZoomSubsystem>() : nullptr;
+	FEditorViewportClient* Client = BSPPanZoomInput::GetActiveEditorViewportClient();
 	if (!Subsystem || !Client || Client != PanZoomKeyViewportClient)
 	{
 		return false;
@@ -262,7 +262,7 @@ bool FLoops2DPanZoomInputProcessor::HandleMouseButtonDownEvent(FSlateApplication
 	return true;
 }
 
-bool FLoops2DPanZoomInputProcessor::HandleMouseButtonUpEvent(FSlateApplication& SlateApp, const FPointerEvent& MouseEvent)
+bool FBSPPanZoomInputProcessor::HandleMouseButtonUpEvent(FSlateApplication& SlateApp, const FPointerEvent& MouseEvent)
 {
 	if (!bIsPanning && !bIsZooming)
 	{
@@ -284,14 +284,14 @@ bool FLoops2DPanZoomInputProcessor::HandleMouseButtonUpEvent(FSlateApplication& 
 	return false;
 }
 
-bool FLoops2DPanZoomInputProcessor::HandleMouseMoveEvent(FSlateApplication& SlateApp, const FPointerEvent& MouseEvent)
+bool FBSPPanZoomInputProcessor::HandleMouseMoveEvent(FSlateApplication& SlateApp, const FPointerEvent& MouseEvent)
 {
 	if ((!bIsPanning && !bIsZooming) || !CapturedViewportClient || !GEditor)
 	{
 		return false;
 	}
 
-	ULoops2DPanZoomSubsystem* Subsystem = GEditor->GetEditorSubsystem<ULoops2DPanZoomSubsystem>();
+	UBSPPanZoomSubsystem* Subsystem = GEditor->GetEditorSubsystem<UBSPPanZoomSubsystem>();
 	if (!Subsystem)
 	{
 		return false;
@@ -303,7 +303,7 @@ bool FLoops2DPanZoomInputProcessor::HandleMouseMoveEvent(FSlateApplication& Slat
 
 	// Releasing the key stops adjusting, but the drag stays consumed until
 	// mouse-up so the viewport doesn't see moves for a press it never got.
-	if (!bPanZoomKeyDown || bPanZoomGestureCancelled || !Loops2DPanZoomInput::CanUseModeShortcuts(SlateApp)
+	if (!bPanZoomKeyDown || bPanZoomGestureCancelled || !BSPPanZoomInput::CanUseModeShortcuts(SlateApp)
 		|| !GEditor->GetAllViewportClients().Contains(CapturedViewportClient))
 	{
 		return true;
@@ -319,5 +319,35 @@ bool FLoops2DPanZoomInputProcessor::HandleMouseMoveEvent(FSlateApplication& Slat
 		Subsystem->Zoom(CapturedViewportClient, Delta.X * ZoomSpeed);
 	}
 
+	return true;
+}
+
+bool FBSPPanZoomInputProcessor::HandleMouseWheelOrGestureEvent(FSlateApplication& SlateApp, const FPointerEvent& InWheelEvent, const FPointerEvent* InGestureEvent)
+{
+	if (!bPanZoomKeyDown || bPanZoomGestureCancelled || InGestureEvent || !GEditor
+		|| !BSPPanZoomInput::CanUseModeShortcuts(SlateApp))
+	{
+		return false;
+	}
+
+	UBSPPanZoomSubsystem* Subsystem = GEditor->GetEditorSubsystem<UBSPPanZoomSubsystem>();
+	FEditorViewportClient* Client = PanZoomKeyViewportClient;
+	if (!Subsystem || !Client || !GEditor->GetAllViewportClients().Contains(Client))
+	{
+		return false;
+	}
+
+	// Same rule as clicks: only over the viewport the key was pressed in.
+	const TSharedPtr<SEditorViewport> ViewportWidget = Client->GetEditorViewportWidget();
+	if (!ViewportWidget || !ViewportWidget->GetCachedGeometry().IsUnderLocation(InWheelEvent.GetScreenSpacePosition()))
+	{
+		return false;
+	}
+
+	// Scrolling while the key is held means this was not a tap.
+	bPanZoomKeyUsedWithMouse = true;
+	Subsystem->SetEnabled(Client, true);
+	constexpr float WheelZoomStep = 0.12f;
+	Subsystem->Zoom(Client, InWheelEvent.GetWheelDelta() * WheelZoomStep);
 	return true;
 }

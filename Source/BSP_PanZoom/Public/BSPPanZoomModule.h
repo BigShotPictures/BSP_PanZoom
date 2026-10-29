@@ -1,4 +1,4 @@
-// Copyright 2026 Loops Creative Studio. All Rights Reserved.
+// Copyright Big Shot Pictures. Based on Loops 2D Pan/Zoom, Copyright 2026 Loops Creative Studio (MIT, see LICENSE).
 
 #pragma once
 #include "CoreMinimal.h"
@@ -8,7 +8,7 @@
 class FEditorViewportClient;
 struct FToolMenuContext;
 
-class FLoops2DPanZoomModule : public IModuleInterface
+class FBSPPanZoomModule : public IModuleInterface
 {
 	public:
 		virtual void StartupModule() override;
@@ -20,6 +20,7 @@ class FLoops2DPanZoomModule : public IModuleInterface
 		void OnToggleClicked(const FToolMenuContext& InContext);
 		ECheckBoxState GetToggleCheckState(const FToolMenuContext& InContext) const;
 		FText GetToggleTooltipText() const;
-		
-		TSharedPtr<class FLoops2DPanZoomInputProcessor> InputProcessor;
+		void FillOptionsMenu(class UToolMenu* Menu);
+
+		TSharedPtr<class FBSPPanZoomInputProcessor> InputProcessor;
 };

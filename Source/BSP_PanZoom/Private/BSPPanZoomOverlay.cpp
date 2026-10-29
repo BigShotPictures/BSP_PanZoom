@@ -1,13 +1,13 @@
-// Copyright 2026 Loops Creative Studio. All Rights Reserved.
+// Copyright Big Shot Pictures. Based on Loops 2D Pan/Zoom, Copyright 2026 Loops Creative Studio (MIT, see LICENSE).
 
-#include "Loops2DPanZoomOverlay.h"
-#include "Loops2DPanZoomSubsystem.h"
+#include "BSPPanZoomOverlay.h"
+#include "BSPPanZoomSubsystem.h"
 #include "EditorViewportClient.h"
 #include "Editor.h"
 #include "Rendering/DrawElements.h"
 #include "Styling/CoreStyle.h"
 
-namespace Loops2DPanZoomOverlayLayout
+namespace BSPPanZoomOverlayLayout
 {
 	//Default Layout
 	constexpr float FrameWidth = 140.0f;
@@ -16,25 +16,25 @@ namespace Loops2DPanZoomOverlayLayout
 	constexpr float TextHeight = 20.0f;
 }
 
-void SLoops2DPanZoomOverlay::Construct(const FArguments& InArgs, FEditorViewportClient* InViewportClient)
+void SBSPPanZoomOverlay::Construct(const FArguments& InArgs, FEditorViewportClient* InViewportClient)
 {
 	ViewportClient = InViewportClient;
 }
 
-FVector2D SLoops2DPanZoomOverlay::ComputeDesiredSize(float) const
+FVector2D SBSPPanZoomOverlay::ComputeDesiredSize(float) const
 {
-	return FVector2D(Loops2DPanZoomOverlayLayout::FrameWidth + Loops2DPanZoomOverlayLayout::Margin * 2.0f,
-		Loops2DPanZoomOverlayLayout::FrameHeight + Loops2DPanZoomOverlayLayout::Margin * 2.0f + Loops2DPanZoomOverlayLayout::TextHeight * 2.0f);
+	return FVector2D(BSPPanZoomOverlayLayout::FrameWidth + BSPPanZoomOverlayLayout::Margin * 2.0f,
+		BSPPanZoomOverlayLayout::FrameHeight + BSPPanZoomOverlayLayout::Margin * 2.0f + BSPPanZoomOverlayLayout::TextHeight * 2.0f);
 }
 
-int32 SLoops2DPanZoomOverlay::OnPaint(const FPaintArgs& Args, const FGeometry& AllottedGeometry, const FSlateRect& MyCullingRect, FSlateWindowElementList& OutDrawElements, int32 LayerId, const FWidgetStyle& InWidgetStyle, bool bParentEnabled) const
+int32 SBSPPanZoomOverlay::OnPaint(const FPaintArgs& Args, const FGeometry& AllottedGeometry, const FSlateRect& MyCullingRect, FSlateWindowElementList& OutDrawElements, int32 LayerId, const FWidgetStyle& InWidgetStyle, bool bParentEnabled) const
 {
 	if (!ViewportClient || !GEditor)
 	{
 		return LayerId;
 	}
 
-	ULoops2DPanZoomSubsystem* Subsystem = GEditor->GetEditorSubsystem<ULoops2DPanZoomSubsystem>();
+	UBSPPanZoomSubsystem* Subsystem = GEditor->GetEditorSubsystem<UBSPPanZoomSubsystem>();
 
 	float ZoomPercent = 100.0f;
 	FVector2D CropSize = FVector2D(1.0f, 1.0f);
@@ -46,24 +46,24 @@ int32 SLoops2DPanZoomOverlay::OnPaint(const FPaintArgs& Args, const FGeometry& A
 	}
 
 	const FVector2D LocalSize = AllottedGeometry.GetLocalSize();
-	const float FrameLeft = Loops2DPanZoomOverlayLayout::Margin;
-	const float FrameTop = Loops2DPanZoomOverlayLayout::Margin + Loops2DPanZoomOverlayLayout::TextHeight;
+	const float FrameLeft = BSPPanZoomOverlayLayout::Margin;
+	const float FrameTop = BSPPanZoomOverlayLayout::Margin + BSPPanZoomOverlayLayout::TextHeight;
 
 	FSlateDrawElement::MakeBox(
 		OutDrawElements,
 		LayerId,
-		AllottedGeometry.ToPaintGeometry(FVector2D(Loops2DPanZoomOverlayLayout::FrameWidth, 
-			Loops2DPanZoomOverlayLayout::FrameHeight), FSlateLayoutTransform(FVector2D(FrameLeft, FrameTop))),
+		AllottedGeometry.ToPaintGeometry(FVector2D(BSPPanZoomOverlayLayout::FrameWidth, 
+			BSPPanZoomOverlayLayout::FrameHeight), FSlateLayoutTransform(FVector2D(FrameLeft, FrameTop))),
 		FCoreStyle::Get().GetBrush("WhiteBrush"),
 		ESlateDrawEffect::None,
 		FLinearColor(0.0f, 0.0f, 0.0f, 0.35f)
 	);
 
 	{
-		const FVector2D InnerSize(Loops2DPanZoomOverlayLayout::FrameWidth * CropSize.X, Loops2DPanZoomOverlayLayout::FrameHeight * CropSize.Y);
+		const FVector2D InnerSize(BSPPanZoomOverlayLayout::FrameWidth * CropSize.X, BSPPanZoomOverlayLayout::FrameHeight * CropSize.Y);
 		const FVector2D InnerCenter(
-			FrameLeft + Loops2DPanZoomOverlayLayout::FrameWidth * (0.5f + CropCenterOffset.X),
-			FrameTop + Loops2DPanZoomOverlayLayout::FrameHeight * (0.5f + CropCenterOffset.Y)
+			FrameLeft + BSPPanZoomOverlayLayout::FrameWidth * (0.5f + CropCenterOffset.X),
+			FrameTop + BSPPanZoomOverlayLayout::FrameHeight * (0.5f + CropCenterOffset.Y)
 		);
 		const FVector2D InnerTopLeft = InnerCenter - InnerSize * 0.5f;
 
@@ -89,11 +89,11 @@ int32 SLoops2DPanZoomOverlay::OnPaint(const FPaintArgs& Args, const FGeometry& A
 			2.0f
 		);
 	}
-	const FString ZoomText = FString::Printf(TEXT("Loops2DPanZoom: %.0f%%"), ZoomPercent);
+	const FString ZoomText = FString::Printf(TEXT("2D Pan/Zoom: %.0f%%"), ZoomPercent);
 	FSlateDrawElement::MakeText(
 		OutDrawElements,
 		LayerId + 2,
-		AllottedGeometry.ToPaintGeometry(FVector2D(Loops2DPanZoomOverlayLayout::FrameWidth, Loops2DPanZoomOverlayLayout::TextHeight), FSlateLayoutTransform(FVector2D(FrameLeft, FrameTop - Loops2DPanZoomOverlayLayout::TextHeight))),
+		AllottedGeometry.ToPaintGeometry(FVector2D(BSPPanZoomOverlayLayout::FrameWidth, BSPPanZoomOverlayLayout::TextHeight), FSlateLayoutTransform(FVector2D(FrameLeft, FrameTop - BSPPanZoomOverlayLayout::TextHeight))),
 		ZoomText,
 		FCoreStyle::GetDefaultFontStyle("Bold", 8),
 		ESlateDrawEffect::None,
@@ -107,7 +107,7 @@ int32 SLoops2DPanZoomOverlay::OnPaint(const FPaintArgs& Args, const FGeometry& A
 		FSlateDrawElement::MakeText(
 			OutDrawElements,
 			LayerId + 2,
-			AllottedGeometry.ToPaintGeometry(FVector2D(Loops2DPanZoomOverlayLayout::FrameWidth, Loops2DPanZoomOverlayLayout::TextHeight), FSlateLayoutTransform(FVector2D(FrameLeft, FrameTop + Loops2DPanZoomOverlayLayout::FrameHeight))),
+			AllottedGeometry.ToPaintGeometry(FVector2D(BSPPanZoomOverlayLayout::FrameWidth, BSPPanZoomOverlayLayout::TextHeight), FSlateLayoutTransform(FVector2D(FrameLeft, FrameTop + BSPPanZoomOverlayLayout::FrameHeight))),
 			LockText,
 			FCoreStyle::GetDefaultFontStyle("Bold", 8),
 			ESlateDrawEffect::None,

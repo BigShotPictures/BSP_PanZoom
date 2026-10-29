@@ -1,19 +1,19 @@
 {
 	"FileVersion": 3,
 	"Version": 1,
-	"VersionName": "1.8.0",
-	"FriendlyName": "Loops 2D Pan/Zoom",
-	"Description": "2D pan/zoom for the editor viewport: offset and zoom the view to inspect detail",
-	"Category": "Editor",
-	"CreatedBy": "Loops Creative Studio",
-	"CreatedByURL": "https://loopscreativestudio.com",
-	"DocsURL": "https://github.com/LoopsCreativeStudio/Loops2dPanZoom/wiki/Loops2DPanZoom",
+	"VersionName": "1.0",
+	"FriendlyName": "BSP 2D Pan/Zoom",
+	"Description": "Maya-style 2D pan/zoom for editor viewports: zoom into and pan around the view without moving the camera or touching its keys. Through a shot camera the pan is an exact lens shift. Hold \\ and drag (middle mouse pans, right mouse or the wheel zooms); a toolbar button and Pan/Zoom dropdown sit in the viewport toolbar. Drivable from Python through unreal.BSPPanZoomLibrary. Based on Loops 2D Pan/Zoom by Loops Creative Studio (MIT). See README.md.",
+	"Category": "Big Shot Pictures",
+	"CreatedBy": "Big Shot Pictures",
+	"CreatedByURL": "",
+	"DocsURL": "",
 	"MarketplaceURL": "",
 	"SupportURL": "",
 	"EnabledByDefault": true,
 	"EngineVersion": "5.8.0",
 	"CanContainContent": false,
-	"IsBetaVersion": true,
+	"IsBetaVersion": false,
 	"Installed": false,
 	"Plugins": [
 		{
@@ -23,7 +23,7 @@
 	],
 	"Modules": [
 		{
-			"Name": "Loops2DPanZoom",
+			"Name": "BSP_PanZoom",
 			"Type": "Editor",
 			"LoadingPhase": "PostEngineInit",
 			"PlatformAllowList": [

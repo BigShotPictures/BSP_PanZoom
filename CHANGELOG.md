@@ -1,85 +1,15 @@
 # Changelog
 
-## [1.8.0](https://github.com/LoopsCreativeStudio/Loops2dPanZoom/compare/v1.7.1...v1.8.0) (2026-09-22)
+## 1.0 (2026-10-29)
 
+Forked from Loops 2D Pan/Zoom 1.8.0 and renamed BSP_PanZoom (module `BSP_PanZoom`, Python `unreal.BSPPanZoomLibrary`). Supersedes the earlier, never-built BSP_PanZoom hand-off.
 
-### Features
+- Lens-shift pan through cameras (`OffCenterProjectionOffset`), with a setting to turn it off. Free viewports still tilt.
+- Perspective pan stored in frame units: drag follows the cursor exactly, including letterboxed cameras; the overlay crop rectangle is now exact.
+- Control Rig lock centres the control exactly with lens shift, and works in orthographic views.
+- `UBSPPanZoomLibrary` for Python/Blueprint: set/get zoom and pan, enable, reset.
+- Viewport toolbar Pan/Zoom dropdown: Zoom %, Pan X/Y, Reset, lens-shift option.
+- Hold `\` + mouse wheel to zoom.
+- Removed upstream release automation.
 
-* functional on versions 5.7 and 5.8 ([5e2a917](https://github.com/LoopsCreativeStudio/Loops2dPanZoom/commit/5e2a917b2a1e89feffa67d0e2307cbae0aa9d436))
-
-## [1.7.1](https://github.com/LoopsCreativeStudio/Loops2dPanZoom/compare/v1.7.0...v1.7.1) (2026-09-22)
-
-
-### Bug Fixes
-
-* unblock build broken by leftover duplicate sources ([48ecce6](https://github.com/LoopsCreativeStudio/Loops2dPanZoom/commit/48ecce6dee3d6238dd2ab058c7a623c1f05401ec))
-
-## [1.7.0](https://github.com/LoopsCreativeStudio/Loops2dPanZoom/compare/v1.6.0...v1.7.0) (2026-09-22)
-
-
-### Features
-
-* make numpad shortcuts rebindable, guard text fields ([768dc6e](https://github.com/LoopsCreativeStudio/Loops2dPanZoom/commit/768dc6eb2122e7122163ab92bcf8bd5af392faaa))
-
-## [1.6.0](https://github.com/LoopsCreativeStudio/Loops2dPanZoom/compare/v1.5.0...v1.6.0) (2026-09-22)
-
-
-### Features
-
-* Emulate maya's held key pan/zoom UX ([c76fb5e](https://github.com/LoopsCreativeStudio/Loops2dPanZoom/commit/c76fb5e6e98c19bdb2727d04191f726a9f6f649f))
-
-## [1.5.0](https://github.com/LoopsCreativeStudio/Loops2dPanZoom/compare/v1.4.0...v1.5.0) (2026-09-22)
-
-
-### Features
-
-* Allow 2d pan/zoom with cinematic (camera cut) controlled cameras ([c836f24](https://github.com/LoopsCreativeStudio/Loops2dPanZoom/commit/c836f249fc0560d436be7ced8b2e6cd5b9660cc6))
-
-## [1.4.0](https://github.com/LoopsCreativeStudio/Loops2dPanZoom/compare/v1.3.1...v1.4.0) (2026-09-22)
-
-
-### Features
-
-* Allow 2d pan/zoom with cinematic (camera cut) controlled cameras ([c836f24](https://github.com/LoopsCreativeStudio/Loops2dPanZoom/commit/c836f249fc0560d436be7ced8b2e6cd5b9660cc6))
-* Allow 2d pan/zoom with cinematic (camera cut) controlled cameras ([7cb5d0c](https://github.com/LoopsCreativeStudio/Loops2dPanZoom/commit/7cb5d0c6800cc67399e1b9b5241b821efc0e9fcc))
-* **unreal:** pan/zoom on cinematic cameras and settings ([c936b5c](https://github.com/LoopsCreativeStudio/Loops2dPanZoom/commit/c936b5c3bde684dba4d3d5b20992d571c8e288b3))
-
-## [1.3.1](https://github.com/LoopsCreativeStudio/Loops2dPanZoom/compare/v1.3.0...v1.3.1) (2026-07-09)
-
-
-### Bug Fixes
-
-* Fix warning camera pilot ([ef620c7](https://github.com/LoopsCreativeStudio/Loops2dPanZoom/commit/ef620c7bc14d4026d173c8bc2bdf7486f632a9a0))
-* Improve refresh viewport on camera lock on control ([1770838](https://github.com/LoopsCreativeStudio/Loops2dPanZoom/commit/17708387d3490de3ddc4fc174a4e9d462d62ea6b))
-
-## [1.3.0](https://github.com/LoopsCreativeStudio/Loops2dPanZoom/compare/v1.2.0...v1.3.0) (2026-07-09)
-
-
-### Features
-
-* Add lock camera on selected control rig ([5ec9d85](https://github.com/LoopsCreativeStudio/Loops2dPanZoom/commit/5ec9d85179a6f7f0510956945dfde5117ef9eab5))
-
-
-### Bug Fixes
-
-* Fix 2D Zoom limit less FOV 5 degree ([886b8fa](https://github.com/LoopsCreativeStudio/Loops2dPanZoom/commit/886b8fa50889767d478e816a7df2b585e35ad4ba))
-
-## [1.2.0](https://github.com/LoopsCreativeStudio/Loops2dPanZoom/compare/v1.1.0...v1.2.0) (2026-07-09)
-
-
-### Features
-
-* initial release ([bacea37](https://github.com/LoopsCreativeStudio/Loops2dPanZoom/commit/bacea37355a54a1c7a43af92e06fc13c74789ac9))
-
-## [1.1.0](https://github.com/LoopsCreativeStudio/Loops2dPanZoom/compare/v1.0.0...v1.1.0) (2026-07-09)
-
-
-### Features
-
-* initial release ([1d76016](https://github.com/LoopsCreativeStudio/Loops2dPanZoom/commit/1d760167da3af14f4cd44675454e6fd9300d83f7))
-* **Unreal:** Add fab public version for unreal 5.7 & unreal 5.8 ([46e9e14](https://github.com/LoopsCreativeStudio/Loops2dPanZoom/commit/46e9e1404a5ac03d6977472ca9061841a07890f9))
-
-
-### Bug Fixes
-
-* **unreal:** fix for publication on fab ([6b1906f](https://github.com/LoopsCreativeStudio/Loops2dPanZoom/commit/6b1906fddbe57980300402835472aa1718d3df4d))
+Upstream history: https://github.com/LoopsCreativeStudio/Loops2dPanZoom/blob/main/CHANGELOG.md

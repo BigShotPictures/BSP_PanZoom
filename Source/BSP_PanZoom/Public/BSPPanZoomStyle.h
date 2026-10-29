@@ -1,11 +1,11 @@
-// Copyright 2026 Loops Creative Studio. All Rights Reserved.
+// Copyright Big Shot Pictures. Based on Loops 2D Pan/Zoom, Copyright 2026 Loops Creative Studio (MIT, see LICENSE).
 
 #pragma once
 
 #include "CoreMinimal.h"
 #include "Styling/SlateStyle.h"
 
-class FLoops2DPanZoomStyle
+class FBSPPanZoomStyle
 {
 	public:
 		static void Initialize();

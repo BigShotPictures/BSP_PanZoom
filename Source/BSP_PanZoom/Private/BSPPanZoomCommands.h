@@ -1,12 +1,12 @@
-// Copyright 2026 Loops Creative Studio. All Rights Reserved.
+// Copyright Big Shot Pictures. Based on Loops 2D Pan/Zoom, Copyright 2026 Loops Creative Studio (MIT, see LICENSE).
 #pragma once
 #include "Framework/Commands/Commands.h"
 #include "Styling/AppStyle.h"
 
-class FLoops2DPanZoomCommands : public TCommands<FLoops2DPanZoomCommands>
+class FBSPPanZoomCommands : public TCommands<FBSPPanZoomCommands>
 {
 public:
-	FLoops2DPanZoomCommands() : TCommands(TEXT("Loops2DPanZoom"), NSLOCTEXT("Loops2DPanZoom", "Commands", "Loops 2D Pan/Zoom"), NAME_None, FAppStyle::GetAppStyleSetName()) {}
+	FBSPPanZoomCommands() : TCommands(TEXT("BSPPanZoom"), NSLOCTEXT("BSPPanZoom", "Commands", "BSP 2D Pan/Zoom"), NAME_None, FAppStyle::GetAppStyleSetName()) {}
 	virtual void RegisterCommands() override;
 	TSharedPtr<FUICommandInfo> ToggleAndDrag;
 	TSharedPtr<FUICommandInfo> Reset;

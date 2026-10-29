@@ -1,4 +1,4 @@
-// Copyright 2026 Loops Creative Studio. All Rights Reserved.
+// Copyright Big Shot Pictures. Based on Loops 2D Pan/Zoom, Copyright 2026 Loops Creative Studio (MIT, see LICENSE).
 
 #pragma once
 #include "CoreMinimal.h"
@@ -7,7 +7,7 @@
 
 class FEditorViewportClient;
 
-class FLoops2DPanZoomInputProcessor : public IInputProcessor
+class FBSPPanZoomInputProcessor : public IInputProcessor
 {
 	public:
 		virtual void Tick(const float DeltaTime, FSlateApplication& SlateApp, TSharedRef<ICursor> Cursor) override;
@@ -16,7 +16,8 @@ class FLoops2DPanZoomInputProcessor : public IInputProcessor
 		virtual bool HandleMouseButtonDownEvent(FSlateApplication& SlateApp, const FPointerEvent& MouseEvent) override;
 		virtual bool HandleMouseButtonUpEvent(FSlateApplication& SlateApp, const FPointerEvent& MouseEvent) override;
 		virtual bool HandleMouseMoveEvent(FSlateApplication& SlateApp, const FPointerEvent& MouseEvent) override;
-		virtual const TCHAR* GetDebugName() const override { return TEXT("Loops2DPanZoom"); }
+		virtual bool HandleMouseWheelOrGestureEvent(FSlateApplication& SlateApp, const FPointerEvent& InWheelEvent, const FPointerEvent* InGestureEvent) override;
+		virtual const TCHAR* GetDebugName() const override { return TEXT("BSPPanZoom"); }
 
 	private:
 		// Hotkey \ is both a hold-modifier (drag to pan/zoom) and a tap-toggle, so
